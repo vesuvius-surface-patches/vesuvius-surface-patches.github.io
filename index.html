@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Held-out Region Explorer</title>
+<meta name="description" content="Slide through 16 hand-labeled test regions of Vesuvius Scroll 1 and compare official GrowPatch with the tiled blend.">
+<meta property="og:title" content="Does the refined mesh stay on its sheet?">
+<meta property="og:description" content="Slide through 16 hand-labeled test regions of Vesuvius Scroll 1 and compare official GrowPatch with the tiled blend.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://uekanem.com/vesuvius-surface-patches/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,200..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="explorer.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="#top" aria-label="Held-out region explorer, top of page"><i class="mark-dot" aria-hidden="true"></i>Held-out Region Explorer</a>
+  <p class="crumbs"><span>Vesuvius Challenge</span><span>Scroll 1</span><span>PHerc. Paris. 4</span></p>
+  <div class="cut-control">
+    <span class="micro" id="cutLabel">GrowPatch cutoff</span>
+    <div class="seg" role="radiogroup" aria-labelledby="cutLabel" id="cutoffs"></div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-grid">
+    <div class="hero-title">
+      <p class="micro eyebrow">Vesuvius Scroll 1 · 16 hand-labeled test regions</p>
+      <h1>Does the refined mesh stay on its&nbsp;sheet?</h1>
+    </div>
+    <div class="lede-wrap"><p class="lede">A small tool that pulls GrowPatch surfaces back onto the papyrus sheet they are following, and a page where you can check, region by region, whether it really does.</p><a class="lede-link" href="#story">How it works, in three steps <span aria-hidden="true">↓</span></a></div>
+  </div>
+
+  <figure class="band" aria-label="A live slice through region external_06, sweeping through the cube">
+    <canvas id="band"></canvas>
+    <figcaption class="band-cap">
+      <span class="micro"><i class="live" aria-hidden="true"></i>Live slice · external_06</span>
+      <span class="micro band-key"><span class="kl kl-tiled">Tiled blend</span><span class="kl kl-stock">Official GrowPatch</span><span class="kl kl-target">Target sheet</span></span>
+      <span class="micro" id="bandPos"></span>
+    </figcaption>
+  </figure>
+
+  <dl class="readout" id="summary" aria-live="polite"></dl>
+  <p class="caveat" id="caveat"></p>
+  <p class="aside" id="cutNote"></p>
+</section>
+
+<section class="story" id="story" aria-labelledby="storyTitle">
+  <h2 class="micro eyebrow" id="storyTitle"><span class="idx">01</span>Why this exists</h2>
+  <div class="story-grid">
+    <article class="step">
+      <svg class="diagram" viewBox="0 0 320 150" role="img" aria-label="Two papyrus sheets. The GrowPatch surface starts on the lower sheet and drifts into the gap between them."><path class="d-sheet" d="M12 50.1 L16 50.3 L20 50.5 L24 50.7 L28 50.8 L32 50.9 L36 51.0 L40 51.0 L44 51.0 L48 50.9 L52 50.8 L56 50.7 L60 50.5 L64 50.3 L68 50.1 L72 49.8 L76 49.5 L80 49.2 L84 48.9 L88 48.5 L92 48.1 L96 47.7 L100 47.3 L104 46.9 L108 46.5 L112 46.0 L116 45.6 L120 45.2 L124 44.7 L128 44.3 L132 43.9 L136 43.5 L140 43.2 L144 42.8 L148 42.5 L152 42.2 L156 41.9 L160 41.7 L164 41.5 L168 41.3 L172 41.2 L176 41.1 L180 41.0 L184 41.0 L188 41.0 L192 41.1 L196 41.2 L200 41.3 L204 41.4 L208 41.6 L212 41.9 L216 42.1 L220 42.4 L224 42.7 L228 43.1 L232 43.4 L236 43.8 L240 44.2 L244 44.6 L248 45.0 L252 45.5 L256 45.9 L260 46.3 L264 46.8 L268 47.2 L272 47.6 L276 48.0 L280 48.4 L284 48.8 L288 49.1 L292 49.5 L296 49.8 L300 50.0 L304 50.3 L308 50.5"/><path class="d-sheet" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.9 L120 108.5 L124 108.2 L128 107.8 L132 107.3 L136 106.9 L140 106.5 L144 106.1 L148 105.6 L152 105.2 L156 104.8 L160 104.3 L164 103.9 L168 103.6 L172 103.2 L176 102.8 L180 102.5 L184 102.2 L188 101.9 L192 101.7 L196 101.5 L200 101.3 L204 101.2 L208 101.1 L212 101.0 L216 101.0 L220 101.0 L224 101.1 L228 101.1 L232 101.3 L236 101.4 L240 101.6 L244 101.9 L248 102.1 L252 102.4 L256 102.7 L260 103.1 L264 103.4 L268 103.8 L272 104.2 L276 104.6 L280 105.0 L284 105.5 L288 105.9 L292 106.3 L296 106.8 L300 107.2 L304 107.6 L308 108.0"/><path class="d-grow" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.8 L120 108.2 L124 107.5 L128 106.7 L132 105.7 L136 104.7 L140 103.6 L144 102.4 L148 101.2 L152 99.9 L156 98.6 L160 97.3 L164 95.9 L168 94.5 L172 93.2 L176 91.8 L180 90.5 L184 89.2 L188 87.9 L192 86.7 L196 85.6 L200 84.5 L204 83.4 L208 82.5 L212 81.6 L216 80.8 L220 80.1 L224 79.5 L228 79.0 L232 78.6 L236 78.3 L240 78.1 L244 78.0 L248 78.0 L252 78.1 L256 78.4 L260 78.7 L264 79.1 L268 79.5 L272 79.9 L276 80.3 L280 80.7 L284 81.1 L288 81.5 L292 81.9 L296 82.3 L300 82.6 L304 82.9 L308 83.2"/><text class="d-label" x="14" y="26" text-anchor="start">sheet</text><text class="d-label" x="14" y="136" text-anchor="start">sheet</text><text class="d-label d-dim" x="306" y="72" text-anchor="end">gap</text><text class="d-label d-strong" x="150" y="76" text-anchor="middle">GrowPatch drifts off</text></svg>
+      <h3>The problem</h3>
+      <p>To read a rolled-up scroll, each papyrus sheet is traced as a surface, and the scan is read along that surface. GrowPatch, the tracer built into VC3D, does the tracing automatically, but it often drifts a few voxels off the sheet, onto voxels between sheets or onto a sheet's edge. A surface that drifts reads gap instead of papyrus, and someone has to fix it by hand.</p>
+    </article>
+    <article class="step">
+      <svg class="diagram" viewBox="0 0 320 150" role="img" aria-label="GrowPatch (dashed), a second trace on the sheet (dotted), and the refined surface (blue) halfway between them where they agree, left alone where they are far apart."><path class="d-sheet" d="M12 50.1 L16 50.3 L20 50.5 L24 50.7 L28 50.8 L32 50.9 L36 51.0 L40 51.0 L44 51.0 L48 50.9 L52 50.8 L56 50.7 L60 50.5 L64 50.3 L68 50.1 L72 49.8 L76 49.5 L80 49.2 L84 48.9 L88 48.5 L92 48.1 L96 47.7 L100 47.3 L104 46.9 L108 46.5 L112 46.0 L116 45.6 L120 45.2 L124 44.7 L128 44.3 L132 43.9 L136 43.5 L140 43.2 L144 42.8 L148 42.5 L152 42.2 L156 41.9 L160 41.7 L164 41.5 L168 41.3 L172 41.2 L176 41.1 L180 41.0 L184 41.0 L188 41.0 L192 41.1 L196 41.2 L200 41.3 L204 41.4 L208 41.6 L212 41.9 L216 42.1 L220 42.4 L224 42.7 L228 43.1 L232 43.4 L236 43.8 L240 44.2 L244 44.6 L248 45.0 L252 45.5 L256 45.9 L260 46.3 L264 46.8 L268 47.2 L272 47.6 L276 48.0 L280 48.4 L284 48.8 L288 49.1 L292 49.5 L296 49.8 L300 50.0 L304 50.3 L308 50.5"/><path class="d-sheet" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.9 L120 108.5 L124 108.2 L128 107.8 L132 107.3 L136 106.9 L140 106.5 L144 106.1 L148 105.6 L152 105.2 L156 104.8 L160 104.3 L164 103.9 L168 103.6 L172 103.2 L176 102.8 L180 102.5 L184 102.2 L188 101.9 L192 101.7 L196 101.5 L200 101.3 L204 101.2 L208 101.1 L212 101.0 L216 101.0 L220 101.0 L224 101.1 L228 101.1 L232 101.3 L236 101.4 L240 101.6 L244 101.9 L248 102.1 L252 102.4 L256 102.7 L260 103.1 L264 103.4 L268 103.8 L272 104.2 L276 104.6 L280 105.0 L284 105.5 L288 105.9 L292 106.3 L296 106.8 L300 107.2 L304 107.6 L308 108.0"/><path class="d-trace" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.9 L120 108.5 L124 108.2 L128 107.8 L132 107.3 L136 106.9 L140 106.5 L144 106.1 L148 105.6 L152 105.2 L156 104.8 L160 104.3 L164 103.9 L168 103.6 L172 103.2 L176 102.8 L180 102.5 L184 102.2 L188 101.9 L192 101.7 L196 101.5 L200 101.3 L204 101.2 L208 101.1 L212 101.0 L216 101.0 L220 101.0 L224 101.1 L228 101.1 L232 101.3 L236 101.4 L240 101.6 L244 101.9 L248 102.1 L252 102.4 L256 102.7 L260 103.1 L264 103.4 L268 103.8 L272 104.2 L276 104.6 L280 105.0 L284 105.5 L288 105.9 L292 106.3 L296 106.8 L300 107.2 L304 107.6 L308 108.0"/><path class="d-grow" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.8 L120 108.2 L124 107.5 L128 106.7 L132 105.7 L136 104.7 L140 103.6 L144 102.4 L148 101.2 L152 99.9 L156 98.6 L160 97.3 L164 95.9 L168 94.5 L172 93.2 L176 91.8 L180 90.5 L184 89.2 L188 87.9 L192 86.7 L196 85.6 L200 84.5 L204 83.4 L208 82.5 L212 81.6 L216 80.8 L220 80.1 L224 79.5 L228 79.0 L232 78.6 L236 78.3 L240 78.1 L244 78.0 L248 78.0 L252 78.1 L256 78.4 L260 78.7 L264 79.1 L268 79.5 L272 79.9 L276 80.3 L280 80.7 L284 81.1 L288 81.5 L292 81.9 L296 82.3 L300 82.6 L304 82.9 L308 83.2"/><path class="d-refined" d="M12 107.3 L16 107.7 L20 108.1 L24 108.5 L28 108.9 L32 109.2 L36 109.5 L40 109.8 L44 110.1 L48 110.3 L52 110.5 L56 110.7 L60 110.8 L64 110.9 L68 111.0 L72 111.0 L76 111.0 L80 110.9 L84 110.8 L88 110.7 L92 110.5 L96 110.3 L100 110.1 L104 109.9 L108 109.6 L112 109.2 L116 108.8 L120 108.4 L124 107.8 L128 107.2 L132 106.5 L136 105.8 L140 105.1 L144 104.2 L148 103.4 L152 102.6 L156 101.7 L160 100.8 L164 99.9 L168 99.0 L172 98.2 L176 97.3 L180 96.5 L184 95.7 L188 94.9 L192 93.3 L196 91.6 L200 89.9 L204 88.2 L208 86.5 L212 84.8 L216 83.2 L220 81.6 L224 80.2 L228 79.0 L232 78.6 L236 78.3 L240 78.1 L244 78.0 L248 78.0 L252 78.1 L256 78.4 L260 78.7 L264 79.1 L268 79.5 L272 79.9 L276 80.3 L280 80.7 L284 81.1 L288 81.5 L292 81.9 L296 82.3 L300 82.6 L304 82.9 L308 83.2"/><path class="d-arrow" d="M168 94.5 L168 97.4"/><path class="d-head" d="M165 94.4 L168 98.4 L171 94.4"/><path class="d-arrow" d="M204 83.4 L204 86.6"/><path class="d-head" d="M201 83.6 L204 87.6 L207 83.6"/><path class="d-grow" d="M14 14 L34 14"/><text class="d-label" x="40" y="17" text-anchor="start">GrowPatch</text><path class="d-trace" d="M118 14 L138 14"/><text class="d-label" x="144" y="17" text-anchor="start">second trace</text><path class="d-refined" d="M236 14 L256 14"/><text class="d-label d-strong" x="262" y="17" text-anchor="start">refined</text><text class="d-label d-dim" x="306" y="74" text-anchor="end">far apart: left alone</text><text class="d-label d-strong" x="112" y="138" text-anchor="middle">close: moved halfway</text></svg>
+      <h3>The idea</h3>
+      <p>Grow a second, independent trace of the same surface prediction in small tiles over the GrowPatch mesh. Where both see one sheet within 8 voxels of each other, move the mesh halfway toward the second trace. Where they disagree, leave it alone. The method never looks at the hand labels.</p>
+      <p class="why"><b>Why refine GrowPatch instead of replacing it?</b> Our first attempts were standalone tracers, and on held-out test regions they did not reliably beat GrowPatch. So we kept GrowPatch, which already follows a sheet across long distances, and fixed only the small, local drift.</p>
+    </article>
+    <article class="step">
+      <svg class="diagram" viewBox="0 0 320 150" role="img" aria-label="A small cube of the scan with one hand-labeled papyrus sheet inside it and a seed point on that sheet."><polygon class="d-target" points="160.0,44.4 164.0,46.6 168.0,48.6 172.0,50.3 175.9,51.7 179.9,53.0 183.9,54.1 187.9,54.9 191.9,55.7 195.9,56.4 199.8,57.1 203.8,57.7 207.8,58.4 211.8,59.2 215.8,60.1 219.8,61.1 223.7,62.4 227.7,63.9 231.7,65.6 235.7,67.5 239.7,69.7 160.0,110.8 156.0,108.5 152.0,106.6 148.0,104.9 144.1,103.4 140.1,102.2 136.1,101.1 132.1,100.2 128.1,99.4 124.1,98.8 120.2,98.1 116.2,97.5 112.2,96.8 108.2,96.0 104.2,95.1 100.2,94.0 96.3,92.8 92.3,91.3 88.3,89.6 84.3,87.7 80.3,85.4"/><line class="d-cube-back" x1="160.0" y1="73.4" x2="160.0" y2="-9.4"/><line class="d-cube-back" x1="160.0" y1="73.4" x2="80.3" y2="119.4"/><line class="d-cube-back" x1="160.0" y1="73.4" x2="239.7" y2="119.4"/><line class="d-cube" x1="160.0" y1="-9.4" x2="80.3" y2="36.6"/><line class="d-cube" x1="160.0" y1="-9.4" x2="239.7" y2="36.6"/><line class="d-cube" x1="80.3" y1="119.4" x2="80.3" y2="36.6"/><line class="d-cube" x1="80.3" y1="119.4" x2="160.0" y2="165.4"/><line class="d-cube" x1="80.3" y1="36.6" x2="160.0" y2="82.6"/><line class="d-cube" x1="239.7" y1="119.4" x2="239.7" y2="36.6"/><line class="d-cube" x1="239.7" y1="119.4" x2="160.0" y2="165.4"/><line class="d-cube" x1="239.7" y1="36.6" x2="160.0" y2="82.6"/><line class="d-cube" x1="160.0" y1="165.4" x2="160.0" y2="82.6"/><circle class="d-seed" cx="160.0" cy="77.6" r="3.2"/><text class="d-label d-strong" x="168.0" y="71.586" text-anchor="start">seed</text><text class="d-label d-dim" x="306" y="26" text-anchor="end">≈ 2 mm cube</text><text class="d-label d-green" x="14" y="136" text-anchor="start">hand-labeled target sheet</text></svg>
+      <h3>The test</h3>
+      <p>Scroll 1 has small cubes, about 2&nbsp;mm across, where the papyrus sheets were labeled by hand. We fixed the method's settings on 16 of them, then ran it once on 16 others and measured how much of the right sheet each surface found. Those 16 test regions are the ones on this page.</p>
+    </article>
+  </div>
+
+  <div class="guide">
+    <div class="guide-why">
+      <h3>Why a page, and not just a number</h3>
+      <p>A single percentage hides a lot: where the gain comes from, whether the surface really sits on papyrus, and where things go wrong. Here you can check every test region yourself, slice by slice, including external_10, where the method puts the most surface on a wrong sheet.</p>
+    </div>
+    <ol class="guide-steps">
+      <li><span class="n">1</span><p><b>Pick a region</b> in the tray below. Each disc shows what changed there: green is target sheet newly found, orange is surface newly placed on a wrong sheet.</p></li>
+      <li><span class="n">2</span><p><b>Slide through the cube.</b> The dashed line is GrowPatch, the blue line is the refined mesh, and the green outline is the hand-labeled target sheet.</p></li>
+      <li><span class="n">3</span><p><b>Look from above.</b> The round views show what the scorer counted and what each surface sees in the scan.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="tray-section" aria-labelledby="trayTitle">
+  <div class="tray-head">
+    <h2 class="micro eyebrow" id="trayTitle"><span class="idx">02</span>Choose a region: what the blend changed in each</h2>
+    <p class="tray-note">Each disc is one region seen from above, out to 1&nbsp;mm from the seed. <span class="k k-gain">Bright green</span> is target sheet the blend newly joined to the seed. <span class="k k-bad">Orange</span> is surface newly placed on a wrong sheet. Sorted by area gained. <span class="diamond" aria-hidden="true"></span> marks a wrong-sheet rise above 0.01&nbsp;mm².</p>
+    <button class="text-btn" id="sort" type="button" aria-pressed="false">Sort by region</button>
+  </div>
+  <ol class="tray" id="regionList"></ol>
+</section>
+
+<section class="stage" aria-label="Region viewer">
+  <div class="stage-head">
+    <h2 class="region-id"><span class="micro eyebrow"><span class="idx">03</span>Look inside the region</span><span class="rid"><span class="prefix">external_</span><span class="num" id="regionNum">06</span></span><span class="sr-only" id="regionTitle"></span></h2>
+    <div class="stage-meta">
+      <p class="region-meta" id="regionMeta"></p>
+      <div class="toggles" role="group" aria-label="Layers">
+        <label class="chip"><input type="checkbox" id="tLabels" checked><span class="sw sw-labels"></span>Hand labels</label>
+        <label class="chip"><input type="checkbox" id="tStock" checked><span class="sw sw-stock"></span>Official GrowPatch</label>
+        <label class="chip"><input type="checkbox" id="tTiled" checked><span class="sw sw-tiled"></span>Tiled blend</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="plate">
+    <div class="plate-tag micro">Slice through the cube <span>green = target sheet · orange = other labeled sheets</span></div>
+    <div class="canvas-wrap" id="sectionWrap">
+      <canvas id="section" role="img" aria-label="A slice through the scan with both surfaces drawn on it"></canvas>
+      <div class="loading" id="loading" aria-live="polite">Loading region</div>
+    </div>
+    <div class="scrub">
+      <svg class="cube" id="cube" viewBox="0 0 84 72" aria-hidden="true"></svg>
+      <button class="play" id="play" type="button" aria-label="Play through the cube" aria-pressed="false"><span aria-hidden="true"></span></button>
+      <div class="rail">
+        <input type="range" id="slider" min="-128" max="128" step="4" value="0" aria-label="Slice position, in voxels from the seed">
+        <div class="rail-ticks" id="railTicks" aria-hidden="true"></div>
+      </div>
+      <output id="vOut" for="slider"></output>
+    </div>
+    <p class="keys">Hover the slice to zoom in. <kbd>←</kbd><kbd>→</kbd> move the slice, <kbd>↑</kbd><kbd>↓</kbd> change region, <kbd>space</kbd> plays.</p>
+  </div>
+</section>
+
+<section class="fields" aria-label="Views from above">
+  <figure class="field field-diff">
+    <figcaption><span class="micro">What changed</span><span class="hint">click a disc to pick a slice</span></figcaption>
+    <div class="disc big"><canvas id="chartDiff" aria-label="Map of what the blend changed in this region"></canvas></div>
+    <ul class="legend">
+      <li><i class="sq d3"></i>Newly joined target sheet</li>
+      <li><i class="sq d2"></i>Target sheet before and after</li>
+      <li><i class="sq d4"></i>Lost from the target sheet</li>
+      <li><i class="sq d5"></i>Newly on a wrong sheet</li>
+      <li><i class="sq d6"></i>Wrong sheet before and after</li>
+      <li><i class="sq d1"></i>Scored, no change of note</li>
+    </ul>
+  </figure>
+
+  <div class="field field-pair">
+    <figure class="field-small">
+      <figcaption><span class="micro">GrowPatch</span></figcaption>
+      <div class="disc"><canvas id="chartStock" aria-label="Scoring map for official GrowPatch"></canvas></div>
+    </figure>
+    <figure class="field-small">
+      <figcaption><span class="micro">Tiled blend</span></figcaption>
+      <div class="disc"><canvas id="chartTiled" aria-label="Scoring map for the tiled blend"></canvas></div>
+    </figure>
+    <ul class="legend compact">
+      <li><i class="sq c6"></i>Target sheet, joined to the seed <b>(counted)</b></li>
+      <li><i class="sq c5"></i>Target sheet, cut off from the seed</li>
+      <li><i class="sq c4"></i>Wrong sheet</li>
+      <li><i class="sq c3"></i>No sheet label</li>
+      <li><i class="sq c2"></i>Surface folds over itself</li>
+      <li><i class="sq c1"></i>No surface</li>
+    </ul>
+    <p class="note">The circles sit 96 and 128 voxels from the seed. The small ring around the seed is not scored.</p>
+  </div>
+
+  <figure class="field field-tex">
+    <figcaption><span class="micro">What each surface sees</span><span class="hint" id="texHint">drag to compare</span></figcaption>
+    <div class="disc big tex-wrap" id="texWrap">
+      <canvas id="tex" aria-label="Scan brightness read along each surface"></canvas>
+      <span class="tex-tag left" id="tagL">GrowPatch</span><span class="tex-tag right" id="tagR">Tiled</span>
+    </div>
+    <div class="tex-controls">
+      <div class="seg small" role="radiogroup" aria-label="How to compare the surfaces" id="texModes">
+        <button type="button" role="radio" data-mode="swipe" aria-checked="true">Swipe</button>
+        <button type="button" role="radio" data-mode="blink" aria-checked="false">Blink</button>
+        <button type="button" role="radio" data-mode="ref" aria-checked="false">Labeled sheet</button>
+      </div>
+      <label class="chip"><input type="checkbox" id="tTexColor"><span class="sw sw-classes"></span>Color by sheet</label>
+    </div>
+    <p class="note">The scan's brightness read along each surface, seen from above. Bright, fibrous texture means the surface runs through papyrus. Dark patches are likely gaps between sheets.</p>
+  </figure>
+</section>
+
+<section class="ledger" aria-label="Numbers for this region">
+  <table id="numbers"></table>
+</section>
+
+<section class="notes" id="notes">
+  <div class="note-col wide">
+    <h2 class="micro">What this does and doesn't show</h2>
+    <p>The blend finds more of the target sheet in 15 of 16 regions at every cutoff, and never less. But it also puts more surface on wrong sheets, so it fails the safety check we set before running it.</p>
+    <p>Looking point by point, almost nothing that was already on the target sheet gets moved off it. The new wrong-sheet area comes from GrowPatch surface that sat on voxels with no sheet label and got pulled onto a neighboring labeled sheet. At cutoffs 1 and 128, most of it is in one region, external_10, where GrowPatch never connects the target sheet to the seed. In short, the blend tightens up whatever sheet GrowPatch is already following. It does not fix a surface that has jumped to the wrong sheet. We also pre-registered seven stricter versions to remove the wrong-sheet rise; none passed on the development regions, so none was run on these.</p>
+    <p>The page opens on external_06, which ranks 8th of 16 by area gained at cutoff 128. At cutoffs 1 and 128, the last disc in the tray is external_10.</p>
+  </div>
+  <div class="note-col">
+    <h2 class="micro">Where the numbers come from</h2>
+    <p>Every score comes from the single locked test run, saved in <code>evidence/tiled/heldout_manual_external.json</code>. To draw this page, <code>tools/explorer_meshes.py</code> rebuilt the meshes from the project's data folder with the locked settings. It stops if any score differs from the saved file, and none did. <code>tools/build_explorer.py</code> then drew the images and checked the counted areas against the same file.</p>
+    <p><a id="repoLink" href="https://github.com/udemex10/vesuvius-surface-patches">Code and full write-up</a><br><a href="https://dl.ash2txt.org/full-scrolls/Scroll1/PHercParis4.volpkg/volumetric-instance-labels/README.txt">Where the labels come from</a></p>
+  </div>
+  <div class="note-col">
+    <h2 class="micro">Credits</h2>
+    <p>PHerc. Paris. 4 is held by the Institut de France. The 7.91&nbsp;µm scan is from EduceLab-Scrolls (Parsons et al., 2023). The hand-made sheet labels are from the Vesuvius Challenge. GrowPatch is from ScrollPrize/villa, version <code>e875441</code>. Images made from the scan keep the source data terms (CC&nbsp;BY-NC&nbsp;4.0). The page code is MIT-licensed.</p>
+  </div>
+</section>
+
+<script src="data/manifest.js"></script>
+<script src="explorer.js"></script>
+</body>
+</html>
